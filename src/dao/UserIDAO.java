@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 import src.dao.models.UserDAO;
 import src.queries.UserQueries;
-import src.stuff.DAOException;
 import src.dto.UserDTO;
 
 public class UserIDAO implements UserDAO
@@ -32,7 +31,7 @@ public class UserIDAO implements UserDAO
         this.db = db;
     }
 
-    public boolean create(UserDTO user) throws DAOException
+    public boolean create(UserDTO user) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
@@ -44,25 +43,18 @@ public class UserIDAO implements UserDAO
             stmt.setString(4, user.getUserPassword());
             if(stmt.executeUpdate() <= 0) {
                 response = false;
-                throw new DAOException("Error execute method in INSERT user"); 
             }
         } catch (SQLException e) {
-            throw new DAOException("Error Insert User", e);
+           e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error en Exception class", e);
+           e.printStackTrace(); 
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error stmt close in create user");
-                }
-            }
+            close(stmt);
         }
         return response;
     }
 
-    public UserDTO get(Integer key) throws DAOException
+    public UserDTO get(Integer key) throws SQLException
     {
         UserDTO response = null;
         PreparedStatement stmt = null;
@@ -71,35 +63,20 @@ public class UserIDAO implements UserDAO
             stmt = db.prepareStatement(GETONE);
             stmt.setInt(1, key);
             rs = stmt.executeQuery();
-            if (!rs.next()) {
-                throw new DAOException("Error ResultSet user get");
+            if (rs.next()) {
+                response = set(rs);
             }
-            response = set(rs);
         } catch (SQLException e) {
-            throw new DAOException("Error get user", e);
+            e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error Exception class get user", e);
+            e.printStackTrace();
         } finally {
-            if (rs != null ) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error rs close in get user");
-                }
-            }
-          
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error stmt close in get user");
-                }
-            }
+            close(stmt, rs);
         }
         return response;
     }
     
-    public boolean update(UserDTO user) throws DAOException
+    public boolean update(UserDTO user) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
@@ -112,54 +89,42 @@ public class UserIDAO implements UserDAO
             stmt.setInt(5, user.getUserId());
             if (stmt.executeUpdate() <= 0) {
                 response = false;
-                throw new DAOException("Error execute method in update user");
             }
         } catch (SQLException e) {
-            throw new DAOException("Error update user", e);
+            e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error Exception class in update user", e);
+            e.printStackTrace();
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close(); 
-                } catch (SQLException e) {
-                    throw new DAOException("Error close statement");
-                }
-            }
+            close(stmt);
         }
         return response;
     }
 
-    public boolean update_active(UserDTO user) throws DAOException
+    public boolean update_active(UserDTO user) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
         try {
             stmt = db.prepareStatement(UPDATEACTIVE);
-            /* setByte convert to SQL TINYINT value */
-            stmt.setByte(1, user.getUserActive());
+            /* setByte convert to SQL TINYINT value
+             * user.getUserActive() method returns type byte value
+             */
+            stmt.setByte(1, (byte) user.getUserActive());
             stmt.setInt(2, user.getUserId());
             if (stmt.executeUpdate() <= 0) {
                 response = false;
-                throw new DAOException("Error execute method in update_active");
             }
         } catch (SQLException e) {
-            throw new DAOException("Error update_active in users");
+            e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error Exception class in update_active u");
+            e.printStackTrace();
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    System.out.println(new DAOException("Error"));
-                } 
-            }
+            close(stmt);
         }
         return response;
     }
 
-    public boolean delete(UserDTO user) throws DAOException
+    public boolean delete(UserDTO user) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
@@ -168,25 +133,18 @@ public class UserIDAO implements UserDAO
             stmt.setInt(1, user.getUserId());
             if (stmt.executeUpdate() <= 0) {
                 response = false;
-                throw new DAOException("Error execute method DELETE user");
             }
         } catch (SQLException e) {
-            throw new DAOException("Error delete user", e);
+            e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error Exception general", e);
+            e.printStackTrace();
         } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error close stmt in update_active");
-                }
-            }
+            close(stmt);
         }
         return response;
     }
 
-    public List<UserDTO> all() throws DAOException
+    public List<UserDTO> all() throws SQLException
     {
         List<UserDTO> response = new ArrayList<>();
         PreparedStatement stmt = null;
@@ -194,32 +152,17 @@ public class UserIDAO implements UserDAO
         try {
             stmt = db.prepareStatement(GETALL);
             rs = stmt.executeQuery();
-            if (!rs.next()) {
-                throw new DAOException("Error listar users"); 
-            }
-            while (rs.next()) {
-                response.add(set(rs)); 
+            if (rs.next()) {
+                while (rs.next()) {
+                    response.add(set(rs)); 
+                }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error", e);
+            e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error", e);
+            e.printStackTrace();
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error ResultSet close users"); 
-                }
-            }
-     
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error stmt close users");
-                }
-            }
+            close(stmt, rs);
         }
         return response;
     }
@@ -227,7 +170,7 @@ public class UserIDAO implements UserDAO
     /**
      * @return UserDTO
      */
-    public UserDTO set(ResultSet rs) throws SQLException
+    private UserDTO set(ResultSet rs) throws SQLException
     {
         String nick = rs.getString("user_nickname");
         String name = rs.getString("user_name");
@@ -237,5 +180,32 @@ public class UserIDAO implements UserDAO
         UserDTO user = new UserDTO(nick, name, lastname, password);
         user.setUserId(rs.getInt("user_id"));
         return user;
+    }
+
+    private void close(PreparedStatement stmt) throws SQLException
+    {
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+  
+    private void close(PreparedStatement stmt, ResultSet rs) throws SQLException
+    {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        close(stmt);
     }
 }

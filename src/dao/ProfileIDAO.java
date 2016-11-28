@@ -1,9 +1,12 @@
 package src.dao;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 
 import src.dao.models.ProfileDAO;
 import src.queries.ProfileQueries;
@@ -28,7 +31,7 @@ public class ProfileIDAO implements ProfileDAO
         this.db = db;
     }
 
-    public boolean create(ProfileDTO profile) throws DAOException
+    public boolean create(ProfileDTO profile) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
@@ -37,80 +40,159 @@ public class ProfileIDAO implements ProfileDAO
             stmt.setString(1, profile.getProfileName());
             if (stmt.executeUpdate() <= 0) {
                 response = false;
-                throw new DAOException("Error in executed method in Profile");
             }
         } catch (SQLException e) {
-            throw new DAOException("Error Insert Profile", e);
+            e.printStackTrace();
         } catch (Exception e) {
-            throw new DAOException("Error Exception class in Profile", e);
+            e.printStackTrace();
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
+            close(stmt);
         }
         return response;
     }
   
-    public ProfileDTO get(Integer key) throws DAOException
+    public ProfileDTO get(Integer key) throws SQLException
     {
         ProfileDTO response = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-
-        } catch () {
-    
-        } catch () {
-
+            stmt = db.prepareStatement(GETONE);
+            stmt.setInt(1, key);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                response = set(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            if (true) {
-
-            }
-    
-            if (true) {
-
-            }
+            close(stmt, rs);
         }
+        return response;
     }
    
-    public boolean update(ProfileDTO profile) throws DAOException
+    public boolean update(ProfileDTO profile) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
         try {
             stmt = db.prepareStatement(UPDATE);
-        } catch (SQLException e) {
-            throw new DAOException();
-        } catch (Exception e) {
-            throw new DAOException();
-        } finally {
-            if (stmt != null) {
-                stmt.close();
+            stmt.setString(1, profile.getProfileName());
+            stmt.setInt(2, profile.getProfileId());
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
+        }
+        return response;
+    }
+
+    public boolean update_active(ProfileDTO profile) throws SQLException
+    {
+        boolean response = true;
+        PreparedStatement stmt = null;
+        try {
+            stmt = db.prepareStatement(UPDATEACTIVE);
+            stmt.setByte(1, (byte) profile.getProfileActive());
+            stmt.setInt(2, profile.getProfileId());
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
         }
         return response;
     }
  
-    public boolean delete(ProfileDTO profile) throws DAOException
+    public boolean delete(ProfileDTO profile) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
         try {
             stmt = db.prepareStatement(DELETE);
-        } catch (SQLException e) {
-            throw new DAOException("Error delete Profile", e);
-        } catch (Exception e) {
-            throw new DAOException("Error Exception class delete Profile", e);
-        } finally {
-            if (stmt != null) {
-                stmt.close();
+            stmt.setInt(1, profile.getProfileId());
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
         }
         return response;
     }
 
-    public List<ProfileDTO> all() throws DAOException
+    public List<ProfileDTO> all() throws SQLException
     {
-
+        List<ProfileDTO> response = new ArrayList<>();    
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = db.prepareStatement(GETALL);
+            rs = stmt.executeQuery(); 
+            if (rs.next()) {
+                while (rs.next()) {
+                    response.add(set(rs));
+                } 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt, rs);
+        }
+        return response;
     }
+
+    /**
+     * @return ProfileDTO
+     */
+    private ProfileDTO set(ResultSet rs) throws SQLException
+    {
+        String name = rs.getString("profile_name");
+        ProfileDTO profile = new ProfileDTO(name);
+        profile.setProfileId(rs.getInt("profile_id"));
+        return profile;
+    }
+
+    private void close(PreparedStatement stmt) throws SQLException
+    {
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+   
+    private void close(PreparedStatement stmt, ResultSet rs) throws SQLException
+    {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        close(stmt);
+    } 
 }

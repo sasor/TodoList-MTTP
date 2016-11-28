@@ -1,8 +1,11 @@
 package src.dao;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 import src.dao.models.LicenseDAO;
@@ -27,71 +30,150 @@ public class LicenseIDAO implements LicenseDAO
         this.db = db;
     }
 
-    public boolean create(LicenseDTO license) throws DAOException
+    public boolean create(LicenseDTO license) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
         try {
             stmt = db.prepareStatement(INSERT);
-        } catch (SQLException e) {
-            throw new DAOException();
-        } catch(Exception e) {
-            throw new DAOException();
-        } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error close stmt license"); 
-                }
+            stmt.setInt(1, license.getModuleId());
+            stmt.setString(2, license.getLicenseAction());
+            stmt.setString(3, license.getLicenseDescription());
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
         }
         return response;
     }
 
-    public LicenseDTO get(Integer key) throws DAOException
+    public LicenseDTO get(Integer key) throws SQLException
     {
-
+        LicenseDTO response = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = db.prepareStatement(GETONE);
+            stmt.setInt(1, key);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                response = set(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt, rs);
+        }
+        return response;
     }
 
-    public boolean update(LicenseDTO license) throws DAOException
+    public boolean update(LicenseDTO license) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
         try {
             stmt = db.prepareStatement(UPDATE);
-        } catch (SQLException e) {
-            throw new DAOException();
-        } catch (Exception e) {
-            throw new DAOException();
-        } finally {
-            if (stmt != null) {
-                stmt.close();
+            stmt.setInt(1, license.getModuleId());
+            stmt.setString(2, license.getLicenseAction());
+            stmt.setString(3, license.getLicenseDescription());
+            stmt.setInt(4, license.getLicenseId());
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
         } 
         return response;
     }
 
-    public boolean delete(LicenseDTO license) throws DAOException
+    public boolean delete(LicenseDTO license) throws SQLException
     {
         boolean response = true;
         PreparedStatement stmt = null;
         try {
             stmt = db.prepareStatement(DELETE);
-        } catch (SQLException e) {
-            throw new DAOException();
-        } catch (Exception e) {
-            throw new DAOException();
-        } finally {
-            if (stmt != null) {
-                stmt.close();
+            stmt.setInt(1, license.getLicenseId());
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
         }
         return response;
     }
  
-    public List<LicenseDTO> all() throws DAOException
+    public List<LicenseDTO> all() throws SQLException
     {
+        List<LicenseDTO> response = new ArrayList<>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = db.prepareStatement(GETALL);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                while (rs.next()) {
+                    response.add(set(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt, rs);
+        }
+        return response;
+    }
 
+    private LicenseDTO set(ResultSet rs) throws SQLException
+    {
+        Integer m_id = rs.getInt("module_id");
+        String action = rs.getString("license_action");
+        String description = rs.getString("license_description"); 
+        LicenseDTO license = new LicenseDTO(m_id, action, description);
+        license.setLicenseId(rs.getInt("license_id"));
+        return license;
+    }
+
+    private void close(PreparedStatement stmt) throws SQLException
+    {
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+ 
+    private void close(PreparedStatement stmt, ResultSet rs) throws SQLException
+    {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        close(stmt);
     }
 }

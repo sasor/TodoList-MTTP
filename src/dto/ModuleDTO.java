@@ -1,4 +1,4 @@
-package dto;
+package src.dto;
 
 public class ModuleDTO
 {

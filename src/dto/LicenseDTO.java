@@ -1,4 +1,4 @@
-package dto;
+package src.dto;
 
 public class LicenseDTO
 {
@@ -10,9 +10,9 @@ public class LicenseDTO
     public LicenseDTO()
     {}
 
-    public LicenseDTO(Integer id, String action, String description)
+    public LicenseDTO(Integer m_id, String action, String description)
     {
-        module_id = id;
+        module_id = m_id;
         license_action = action;
         license_description = description;
     }

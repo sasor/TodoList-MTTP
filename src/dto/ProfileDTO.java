@@ -1,10 +1,10 @@
-package dto;
+package src.dto;
 
 public class ProfileDTO
 {
     private Integer profile_id;
     private String profile_name;
-    private int profile_active;
+    private byte profile_active;
 
     public ProfileDTO()
     {}
@@ -14,7 +14,7 @@ public class ProfileDTO
         profile_name = name;
     }
 
-    public ProfileDTO(String name, int active)
+    public ProfileDTO(String name, byte active)
     {
         profile_name = name;
         profile_active = active;
@@ -45,7 +45,7 @@ public class ProfileDTO
         profile_name = name;
     }
 
-    public void setProfileActive(int active)
+    public void setProfileActive(byte active)
     {
         profile_active = active;
     }

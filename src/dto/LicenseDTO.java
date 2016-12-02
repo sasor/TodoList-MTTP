@@ -65,6 +65,11 @@ public class LicenseDTO
 
     public String toString()
     {
-        return "";
+        String SS = " ,";
+        String id = "ID: " + getLicenseId() + SS;
+        String module = "MODULE: " + getModuleId() + SS;
+        String action = "ACTION: " + getLicenseAction() + SS;
+        String description = "DESCRIPTION: " + getLicenseDescription();
+        return "License { " + id + module + action + description + " }";
     }
 }

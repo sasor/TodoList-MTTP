@@ -61,7 +61,12 @@ public class UserDTO
 
     public String toString()
     {
-        return "";
+        String SS = " ,";
+        String id = "ID: " + getUserId() + SS;
+        String name = "NAME: " + getUserName() + SS;
+        String lastname = "LASTNAME: " + getUserLastname() + SS;
+        String active = "ACTIVE: " + getUserActive();
+        return "User { " + id + name + lastname + active + " }";
     }
 
     public void setUserId(Integer id)

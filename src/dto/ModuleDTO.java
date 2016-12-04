@@ -32,7 +32,7 @@ public class ModuleDTO
 
     public String toString()
     {
-        String SS = " ,";
+        String SS = ", ";
         String id = "ID: " + getModuleId() + SS;
         String name = "NAME: " + getModuleName() + SS;
         String description = "DESCRIPTION: " + getModuleDescription();

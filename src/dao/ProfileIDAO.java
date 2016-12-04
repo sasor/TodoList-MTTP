@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -35,18 +36,24 @@ public class ProfileIDAO implements ProfileDAO
     {
         boolean response = true;
         PreparedStatement stmt = null;
+        ResultSet rs = null; 
         try {
-            stmt = db.prepareStatement(INSERT);
+            stmt = db.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, profile.getProfileName());
             if (stmt.executeUpdate() <= 0) {
                 response = false;
+            } else {
+                rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    profile.setProfileId(rs.getInt(1));
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            close(stmt);
+            close(stmt, rs);
         }
         return response;
     }
@@ -164,7 +171,8 @@ public class ProfileIDAO implements ProfileDAO
     private ProfileDTO set(ResultSet rs) throws SQLException
     {
         String name = rs.getString("profile_name");
-        ProfileDTO profile = new ProfileDTO(name);
+        byte active = rs.getByte("profile_active");
+        ProfileDTO profile = new ProfileDTO(name, active);
         profile.setProfileId(rs.getInt("profile_id"));
         return profile;
     }

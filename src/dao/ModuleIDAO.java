@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,19 +35,25 @@ public class ModuleIDAO implements ModuleDAO
     {
         boolean response = true;
         PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
-            stmt = db.prepareStatement(INSERT);
+            stmt = db.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, module.getModuleName());
             stmt.setString(2, module.getModuleDescription());
             if (stmt.executeUpdate() <= 0) {
                 response = false;
+            } else {
+                rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    module.setModuleId(rs.getInt(1));
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            close(stmt);
+            close(stmt, rs);
         }
         return response;
     }

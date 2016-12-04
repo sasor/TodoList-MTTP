@@ -52,7 +52,7 @@ public class ProfileDTO
 
     public String toString()
     {
-        String SS = " ,";
+        String SS = ", ";
         String id = "ID: " + getProfileId() + SS;
         String name = "NAME: " + getProfileName() + SS;
         String active = "ACTIVE:" + getProfileActive();

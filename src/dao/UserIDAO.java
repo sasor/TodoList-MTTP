@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,21 +36,27 @@ public class UserIDAO implements UserDAO
     {
         boolean response = true;
         PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
-            stmt = db.prepareStatement(INSERT);
+            stmt = db.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, user.getUserNickname());
             stmt.setString(2, user.getUserName());
             stmt.setString(3, user.getUserLastname());
             stmt.setString(4, user.getUserPassword());
             if(stmt.executeUpdate() <= 0) {
                 response = false;
+            } else {
+                rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    user.setUserId(rs.getInt(1));
+                }
             }
         } catch (SQLException e) {
-           e.printStackTrace();
+            System.err.println(e.getMessage());
         } catch (Exception e) {
            e.printStackTrace(); 
         } finally {
-            close(stmt);
+            close(stmt, rs);
         }
         return response;
     }
@@ -176,8 +183,8 @@ public class UserIDAO implements UserDAO
         String name = rs.getString("user_name");
         String lastname = rs.getString("user_lastname");
         String password = rs.getString("user_password");
-  
-        UserDTO user = new UserDTO(nick, name, lastname, password);
+        byte active = rs.getByte("user_active");
+        UserDTO user = new UserDTO(nick, name, lastname, password, active);
         user.setUserId(rs.getInt("user_id"));
         return user;
     }

@@ -130,10 +130,10 @@ public class ModuleIDAO implements ModuleDAO
         try {
             stmt = db.prepareStatement(GETALL);
             rs = stmt.executeQuery();
-            if (rs.next()) {
-                while (rs.next()) {
-                    response.add(set(rs));
-                }
+            if (rs.first()) {
+                do {
+                    response.add(set(rs)); 
+                } while (rs.next());
             }
         } catch (SQLException e) {
             e.printStackTrace();

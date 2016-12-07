@@ -132,10 +132,10 @@ public class LicenseIDAO implements LicenseDAO
         try {
             stmt = db.prepareStatement(GETALL);
             rs = stmt.executeQuery();
-            if (rs.next()) {
-                while (rs.next()) {
+            if (rs.first()) {
+                do {
                     response.add(set(rs));
-                }
+                } while (rs.next());
             }
         } catch (SQLException e) {
             e.printStackTrace();

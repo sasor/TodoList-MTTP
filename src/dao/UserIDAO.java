@@ -20,6 +20,7 @@ public class UserIDAO implements UserDAO
     private final String UPDATEACTIVE = UserQueries.update_active();
     private final String DELETE = UserQueries.delete();
     private final String GETONE = UserQueries.read();
+    private final String GETONEBYNICK = UserQueries.readByNickname();
     private final String GETALL = UserQueries.all();
 
     private Connection db;
@@ -75,6 +76,28 @@ public class UserIDAO implements UserDAO
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt, rs);
+        }
+        return response;
+    }
+
+    public Integer getByNickname(String nickname) throws SQLException
+    {
+        Integer response = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = db.prepareStatement(GETONEBYNICK);
+            stmt.setString(1, nickname);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                response = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -159,10 +182,10 @@ public class UserIDAO implements UserDAO
         try {
             stmt = db.prepareStatement(GETALL);
             rs = stmt.executeQuery();
-            if (rs.next()) {
-                while (rs.next()) {
-                    response.add(set(rs)); 
-                }
+            if (rs.first()) {
+                do {
+                    response.add(set(rs));
+                } while (rs.next());
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -21,6 +21,11 @@ public class UserQueries
     {
         return "SELECT * FROM users WHERE user_id = ?";
     }
+
+    public static String readByNickname()
+    {
+        return "SELECT " + KEY + " FROM users WHERE " + NICK + " = ?";
+    }
   
     public static String update()
     {

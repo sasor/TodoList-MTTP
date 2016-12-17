@@ -17,9 +17,10 @@ public class DB
         try {
             db = DriverManager.getConnection(URL, USERNAME, PASSWORD); 
         } catch (SQLException e) {
-            System.out.println("Error connect to DB");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Error connect to DB Exception block");
+            e.printStackTrace();
         }
     }
 
@@ -31,13 +32,24 @@ public class DB
         return instance;
     }
 
-    public Connection open()
+    public Connection openConnection()
     {
         return db;
     }
 
-    public void close()
+    public void disconnect()
     {
-        instance = null;
+        if (db != null) {
+            try {
+                db.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                instance = null;
+            }
+        }
     }
 }

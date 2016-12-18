@@ -3,7 +3,7 @@ package src.dto.gestion.inventary;
 public class RoomDTO
 {
     private Integer room_id;
-    private Integer home_id;
+    private Integer room_home_id;
     private Integer room_place_id;
 
     public RoomDTO()
@@ -11,7 +11,7 @@ public class RoomDTO
 
     public RoomDTO(Integer home, Integer place)
     {
-        home_id = home;
+        room_home_id = home;
         room_place_id = place;
     }
 
@@ -27,12 +27,12 @@ public class RoomDTO
 
     public Integer getHomeId()
     {
-        return home_id;
+        return room_home_id;
     }
 
     public void setHomeId(Integer h_id)
     {
-        home_id = h_id;
+        room_home_id = h_id;
     }
 
     public Integer getPlaceId()

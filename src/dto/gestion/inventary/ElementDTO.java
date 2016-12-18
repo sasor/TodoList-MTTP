@@ -3,8 +3,8 @@ package src.dto.gestion.inventary;
 public class ElementDTO
 {
     private Integer element_id;
-    private Integer room_id;
-    private int element_level;
+    private Integer element_room_id;
+    private Integer element_level;
 
     private byte have_parent;
     private byte have_child;
@@ -12,10 +12,18 @@ public class ElementDTO
     public ElementDTO()
     {}
 
-    public ElementDTO(Integer room, int level)
+    public ElementDTO(Integer room, Integer level)
     {
         room_id = room;
         element_level = level;
+    }
+
+    public ElementDTO(Integer room, Integer level, byte parent, byte child)
+    {
+        room_id = room;
+        element_level = level;
+        have_parent = parent;
+        have_child = child;
     }
 
     public Integer getElementId()
@@ -30,12 +38,12 @@ public class ElementDTO
 
     public Integer getRoomId()
     {
-        return room_id;
+        return element_room_id;
     }
   
     public void setRoomId(Integer r_id)
     {
-        room_id = r_id;
+        element_room_id = r_id;
     }
 
     public int getElementLevel()

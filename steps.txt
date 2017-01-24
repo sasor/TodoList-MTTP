@@ -1,0 +1,10 @@
+Pasos para convertir a JAR
+javac -d classes/ -cp . src/controllers/*.java
+jar -cvmf manifest.txt todo-list.jar src/
+java -jar todo-list.jar
+
+Alias en el sistema que he utilizado
+alias compile='javac -cp .'
+alias java_e='java -cp .:libs/mysql-connector-java-5.1.40-bin.jar'
+
+

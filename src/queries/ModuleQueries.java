@@ -27,6 +27,11 @@ public class ModuleQueries
     {
         return "DELETE FROM modules WHERE "+KEY+" = ?";
     }
+
+    public static String deleteByKey()
+    {
+        return "DELETE FROM modules WHERE "+KEY+" = ?";
+    }
    
     public static String all()
     {

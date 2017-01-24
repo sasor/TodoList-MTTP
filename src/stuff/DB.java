@@ -1,5 +1,6 @@
 package src.stuff;
 
+import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,8 +10,8 @@ public class DB
     private static DB instance;
     private Connection db; 
     private final String URL = "jdbc:mysql://127.0.0.1/mttp";
-    private final String USERNAME = "root";
-    private final String PASSWORD = "undici";
+    private final String USERNAME = "mttp";
+    private final String PASSWORD = "mttp";
 
     private DB()
     {
@@ -19,6 +20,8 @@ public class DB
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error DataBase Connected");
+            System.exit(1);
         } catch (Exception e) {
             e.printStackTrace();
         }

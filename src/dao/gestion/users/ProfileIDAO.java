@@ -19,7 +19,9 @@ public class ProfileIDAO implements ProfileDAO
     private final String UPDATE = ProfileQueries.update();
     private final String UPDATEACTIVE = ProfileQueries.update_active();
     private final String DELETE = ProfileQueries.delete();
+    private final String DELETEBYKEY = ProfileQueries.delete();
     private final String GETONE = ProfileQueries.read();
+    private final String GETONEBYNAME = ProfileQueries.readByName();
     private final String GETALL = ProfileQueries.all();
 
     private Connection db;
@@ -66,6 +68,28 @@ public class ProfileIDAO implements ProfileDAO
         try {
             stmt = db.prepareStatement(GETONE);
             stmt.setInt(1, key);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                response = set(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt, rs);
+        }
+        return response;
+    }
+
+    public ProfileDTO getByName(String name) throws SQLException
+    {
+        ProfileDTO response = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = db.prepareStatement(GETONEBYNAME);
+            stmt.setString(1, name);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 response = set(rs);
@@ -142,9 +166,29 @@ public class ProfileIDAO implements ProfileDAO
         return response;
     }
 
+    public boolean deleteByKey(Integer key) throws SQLException
+    {
+        boolean response = true;
+        PreparedStatement stmt = null;
+        try {
+            stmt = db.prepareStatement(DELETEBYKEY);
+            stmt.setInt(1, key);
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
+        }
+        return response;
+    }
+
     public List<ProfileDTO> all() throws SQLException
     {
-        List<ProfileDTO> response = new ArrayList<>();    
+        List<ProfileDTO> response = new ArrayList<ProfileDTO>();    
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {

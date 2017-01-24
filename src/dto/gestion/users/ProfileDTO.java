@@ -30,7 +30,7 @@ public class ProfileDTO
         return profile_name;
     }
 
-    public int getProfileActive()
+    public byte getProfileActive()
     {
         return profile_active;
     }

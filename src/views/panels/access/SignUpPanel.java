@@ -137,4 +137,24 @@ public class SignUpPanel extends JPanel
     {
         return cbProfiles;
     }
+
+    public void setValueOfNick()
+    {
+        tfNick.setText("");
+    }
+
+    public void setValueOfName()
+    {
+        tfName.setText("");
+    }
+
+    public void setValueOfLastname()
+    {
+        tfLastname.setText("");
+    }
+
+    public void setValueOfPassword()
+    {
+        tfPwd.setText("");
+    }
 }

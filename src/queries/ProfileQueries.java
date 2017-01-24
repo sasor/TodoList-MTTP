@@ -16,6 +16,11 @@ public class ProfileQueries
     {
         return "SELECT * FROM profiles WHERE "+KEY+" = ?";
     }
+
+    public static String readByName()
+    {
+        return "SELECT * FROM profiles WHERE profile_name = ?";
+    }
   
     public static String update()
     {

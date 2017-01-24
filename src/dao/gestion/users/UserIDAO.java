@@ -19,6 +19,7 @@ public class UserIDAO implements UserDAO
     private final String UPDATE = UserQueries.update();
     private final String UPDATEACTIVE = UserQueries.update_active();
     private final String DELETE = UserQueries.delete();
+    private final String DELETEBYNICK = UserQueries.deleteByNick();
     private final String GETONE = UserQueries.read();
     private final String GETONEBYNICK = UserQueries.readByNickname();
     private final String GETALL = UserQueries.all();
@@ -174,9 +175,29 @@ public class UserIDAO implements UserDAO
         return response;
     }
 
+    public boolean deleteByNickname(String nick) throws SQLException
+    {
+        boolean response = true;
+        PreparedStatement stmt = null;
+        try {
+            stmt = db.prepareStatement(DELETEBYNICK);
+            stmt.setString(1, nick);
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
+        }
+        return response;
+    }
+
     public List<UserDTO> all() throws SQLException
     {
-        List<UserDTO> response = new ArrayList<>();
+        List<UserDTO> response = new ArrayList<UserDTO>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {

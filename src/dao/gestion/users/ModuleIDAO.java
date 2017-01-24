@@ -18,6 +18,7 @@ public class ModuleIDAO implements ModuleDAO
     private final String INSERT = ModuleQueries.create();
     private final String UPDATE = ModuleQueries.update();
     private final String DELETE = ModuleQueries.delete();
+    private final String DELETEKEY = ModuleQueries.deleteByKey();
     private final String GETONE = ModuleQueries.read();
     private final String GETALL = ModuleQueries.all();
 
@@ -121,10 +122,30 @@ public class ModuleIDAO implements ModuleDAO
         } 
         return response;
     }
+
+    public boolean deleteByKey(Integer key) throws SQLException
+    {
+        boolean response = true;
+        PreparedStatement stmt = null;
+        try {
+            stmt = db.prepareStatement(DELETEKEY);
+            stmt.setInt(1, key);
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
+        } 
+        return response;
+    }
   
     public List<ModuleDTO> all() throws SQLException
     {
-        List<ModuleDTO> response = new ArrayList<>(); 
+        List<ModuleDTO> response = new ArrayList<ModuleDTO>(); 
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {

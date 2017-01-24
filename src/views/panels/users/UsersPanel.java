@@ -3,19 +3,19 @@ package src.views.panels.users;
 import javax.swing.*;
 import java.awt.*;
 
-import src.views.panels.SidebarPanel;
+import src.controllers.UserPanelController;
 
 public class UsersPanel extends JPanel
 {
-    public static SidebarPanel sidebar;
+    public static UserSidebarPanel sidebar;
     public static JPanel content;
-   
-    public UsersPanel()
+
+    public UsersPanel(UserPanelController model)
     {
         super(new BorderLayout());
         
-        sidebar = new SidebarPanel();
-        content = new JPanel(new BorderLayout());
+        sidebar = new UserSidebarPanel(model);
+        content = new JPanel();
 
         this.add(sidebar, BorderLayout.WEST);
         this.add(content, BorderLayout.CENTER);

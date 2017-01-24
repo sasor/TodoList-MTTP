@@ -3,13 +3,14 @@ package src.queries;
 public class RoomQueries
 {
     private static final String KEY = "room_id";
+    private static final String ROOM_NAME = "room_name";
     private static final String HOME_KEY = "room_home_id"; 
     private static final String ROOM_PLACE = "room_place_id";
 
     public static String create()
     {
-        String fields = HOME_KEY+","+ROOM_PLACE;
-        return "INSERT INTO rooms ("+fields+") VALUES (?, ?)";
+        String fields = HOME_KEY+","+ROOM_PLACE+","+ROOM_NAME;
+        return "INSERT INTO rooms ("+fields+") VALUES (?, ?, ?)";
     }
 
     public static String read()
@@ -19,7 +20,7 @@ public class RoomQueries
 
     public static String update()
     {
-        String fields = HOME_KEY+" = ?,"+ROOM_PLACE+" = ?";
+        String fields = HOME_KEY+" = ?,"+ROOM_PLACE+" = ?,"+ROOM_NAME+" = ?";
         return "UPDATE rooms SET "+fields+" WHERE "+KEY+" = ?";
     }
 

@@ -18,6 +18,7 @@ public class LicenseIDAO implements LicenseDAO
     private final String INSERT = LicenseQueries.create();
     private final String UPDATE = LicenseQueries.update();
     private final String DELETE = LicenseQueries.delete();
+    private final String DELETEBYKEY = LicenseQueries.delete();
     private final String GETONE = LicenseQueries.read();
     private final String GETALL = LicenseQueries.all();
 
@@ -123,10 +124,30 @@ public class LicenseIDAO implements LicenseDAO
         }
         return response;
     }
+
+    public boolean deleteByKey(Integer key) throws SQLException
+    {
+        boolean response = true;
+        PreparedStatement stmt = null;
+        try {
+            stmt = db.prepareStatement(DELETEBYKEY);
+            stmt.setInt(1, key);
+            if (stmt.executeUpdate() <= 0) {
+                response = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(stmt);
+        }
+        return response;
+    }
  
     public List<LicenseDTO> all() throws SQLException
     {
-        List<LicenseDTO> response = new ArrayList<>();
+        List<LicenseDTO> response = new ArrayList<LicenseDTO>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {

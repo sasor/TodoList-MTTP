@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 import java.util.List;
+import src.controllers.AddUserController;
 
 public class Add extends JPanel
 {
@@ -16,11 +17,12 @@ public class Add extends JPanel
     private JButton bSignUp; 
 
     private GridBagConstraints gbc;
+    private AddUserController controller;
 
-    public Add()
+    public Add(AddUserController model)
     {
         super(new GridBagLayout());
-   
+        controller = model; 
         gbc = new GridBagConstraints();
 
         tfNick = new JTextField();
@@ -38,7 +40,13 @@ public class Add extends JPanel
         cbProfiles = new JComboBox();
         cbProfiles.setPreferredSize(new Dimension(200, 20));
 
-        bSignUp = new JButton("SignUp");
+        bSignUp = new JButton("ADD");
+        bSignUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.entry();
+            }
+        });
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -80,5 +88,56 @@ public class Add extends JPanel
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.insets = new Insets(20, 0, 0, 0);
         this.add(bSignUp, gbc); 
+    }
+
+    public String getValueOfNick()
+    {
+        return tfNick.getText();
+    }
+
+    public String getValueOfName()
+    {
+        return tfName.getText();
+    }
+
+    public String getValueOfLastname()
+    {
+        return tfLastname.getText();
+    }
+
+    public String getValueOfPassword()
+    {
+        String pwd = new String(tfPwd.getPassword());
+        return pwd;
+    }
+
+    public String getSelectedProfile()
+    {
+        return (String) cbProfiles.getSelectedItem();
+    }
+   
+    public JComboBox getProfileCB()
+    {
+        return cbProfiles;
+    } 
+
+    public void setValueOfNick()
+    {
+        tfNick.setText("");
+    }
+
+    public void setValueOfName()
+    {
+        tfName.setText("");
+    }
+
+    public void setValueOfLastname()
+    {
+        tfLastname.setText("");
+    }
+
+    public void setValueOfPassword()
+    {
+        tfPwd.setText(""); 
     }
 }

@@ -44,6 +44,11 @@ public class UserQueries
         return "DELETE FROM users WHERE user_id = ?";
     }
 
+    public static String deleteByNick()
+    {
+        return "DELETE FROM users WHERE user_nickname = ?";
+    }
+
     public static String all()
     {
         return "SELECT * FROM users";

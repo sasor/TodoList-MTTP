@@ -5,25 +5,30 @@ public class ElementDTO
     private Integer element_id;
     private Integer element_room_id;
     private Integer element_level;
-
-    private byte have_parent;
-    private byte have_child;
+    private Integer element_parent;
+    private byte element_has_child;
 
     public ElementDTO()
     {}
 
-    public ElementDTO(Integer room, Integer level)
+    public ElementDTO(Integer room)
     {
-        room_id = room;
-        element_level = level;
+        element_room_id = room;
     }
 
-    public ElementDTO(Integer room, Integer level, byte parent, byte child)
+    public ElementDTO(Integer room, Integer level, Integer parent)
     {
-        room_id = room;
+        element_room_id = room;
         element_level = level;
-        have_parent = parent;
-        have_child = child;
+        element_parent = parent;
+    }
+
+    public ElementDTO(Integer room, Integer level, Integer parent, byte child)
+    {
+        element_room_id = room;
+        element_level = level;
+        element_parent = parent;
+        element_has_child = child;
     }
 
     public Integer getElementId()
@@ -56,23 +61,28 @@ public class ElementDTO
         element_level = level;
     }
 
-    public byte getHaveParent()
+    public Integer getElementParent()
     {
-        return have_parent;
+        return element_parent;
     }
    
-    public void setHaveParent(byte value)
+    public void setElementParent(Integer value)
     {
-        have_parent = value;
+        element_parent = value;
     }
 
     public byte getHaveChild()
     {
-        return have_child;
+        return element_has_child;
     }
 
     public void setHaveChild(byte value)
     {
-        have_child = value;
+        element_has_child = value;
+    }
+
+    public String toString()
+    {
+        return ""+getElementId();
     }
 }

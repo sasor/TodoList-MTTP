@@ -1,10 +1,13 @@
-package src.views.panels;
+package src.views.panels.profiles;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.border.*;
 
-public class SidebarPanel extends JPanel
+import src.controllers.ProfilePanelController;
+
+public class ProfileSidebarPanel extends JPanel
 {
     private JRadioButton rB_all;
     private JRadioButton rB_add;
@@ -15,19 +18,58 @@ public class SidebarPanel extends JPanel
     private ButtonGroup actions;
     private GridBagConstraints gbc;
 
-    public SidebarPanel()
+    private ProfilePanelController controller;
+
+    public ProfileSidebarPanel(ProfilePanelController model)
     {
         super(new GridBagLayout());
+        controller = model;
         this.setBorder(BorderFactory.createTitledBorder("Operations"));
 
         gbc = new GridBagConstraints();
         actions = new ButtonGroup();
    
         rB_all = new JRadioButton("ALL");
+        rB_all.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.all();
+            }
+        });
+
         rB_add = new JRadioButton("ADD");
+        rB_add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.add();
+            }
+        });
+        rB_add.setEnabled(false);
+
         rB_update = new JRadioButton("UPDATE");
+        rB_update.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.update();
+            } 
+        });
+
         rB_delete = new JRadioButton("DELETE");
+        rB_delete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.delete();
+            } 
+        });
+         rB_delete.setEnabled(false);
+
         rB_read = new JRadioButton("READ");
+        rB_read.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.read();
+            }
+        });
 
         actions.add(rB_all);
         actions.add(rB_add);

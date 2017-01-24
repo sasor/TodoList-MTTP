@@ -37,7 +37,6 @@ public class HomeDTO
 
     public Integer getPlaceId()
     {
-        String name = rs.getString();
         return home_place_id;
     }
 

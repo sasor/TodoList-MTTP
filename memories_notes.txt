@@ -1,0 +1,11 @@
+/* NOTES */
+Si tiene [DONE] quiere decir que esta hecho
+
+ProfileIDAO:
+method all() - devolvera vacio si hay algun tipo de error,caso contrario noo.
+               recordar que debes controlar si esta vacio al llamar este method.
+
+cuando creo un DTO en el methodo create() deberia devolverme el id del ultimo
+objeto creado , investigar eso!!!! [DONE]
+
+Para la tabla licenses falta una columna respecto a si va a estar activo o no

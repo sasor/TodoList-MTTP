@@ -10,8 +10,8 @@ public class DB
     private static DB instance;
     private Connection db; 
     private final String URL = "jdbc:mysql://127.0.0.1/mttp";
-    private final String USERNAME = "mttp";
-    private final String PASSWORD = "mttp";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "undici";
 
     private DB()
     {

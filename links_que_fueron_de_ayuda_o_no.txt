@@ -1,0 +1,43 @@
+Para tratar con JTree
+http://www.chuidiang.com/java/JTree/ejemplo-simple-jtree.php
+
+Para tratar con Fechas
+[SimpleDateFormat, DateFromat]
+https://www.tutorialspoint.com/java/java_date_time.htm
+
+Para tratar con Layouts en Java
+http://stackoverflow.com/questions/21745118/how-can-i-center-align-a-group-of-components-with-a-swing-layout-manager-in-spri
+http://www.sc.ehu.es/sbweb/fisica/cursoJava/applets/diseno/gridbag.htm [este es bueno]
+http://www.chuidiang.com/java/layout/GridBagLayout/GridBagLayout.php
+http://www.binarykode.com/bdescargas/Manuales%20y%20Documentos/JAVA/Interfaces%20de%20Usuario/Tutorial%20JAVA%20avanzado%20(I)/swing/text.html
+https://onedrive.live.com/?id=44270A7A1549F0A1%21973&cid=44270A7A1549F0A1 [buscar la carpeta]
+http://docs.oracle.com/javase/tutorial/uiswing/examples/components/index.html#DialogDemo [ENTENDER]
+
+Para tratar con los codigos de errores que Mysql lanza
+http://www.java2s.com/Code/Java/Database-SQL-JDBC/GetErrorCodeSQLStateMessage.htm
+https://dev.mysql.com/doc/refman/5.7/en/error-messages-client.html [lado cliente]
+https://dev.mysql.com/doc/refman/5.7/en/error-messages-server.html [lado server]
+https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html
+https://www.tutorialspoint.com/jdbc/jdbc-exceptions.htm
+https://confluence.atlassian.com/confkb/getting-duplicate-entry-when-using-mysql-on-os-x-236588025.html
+
+Para JAR JAVA
+http://www.chuidiang.com/java/classpath/classpath.php
+
+Eventos:
+http://www.binarykode.com/bdescargas/Manuales%20y%20Documentos/JAVA/Interfaces%20de%20Usuario/Tutorial%20JAVA%20avanzado%20(I)/swing/caretlistener.html
+
+Para tratar simular array asociativos
+http://stackoverflow.com/questions/5122913/java-associative-array
+http://stackoverflow.com/questions/6961510/java-making-objects-with-key-value-pairs
+https://www.luaces-novo.es/guia-de-colecciones-en-java/ [BUENO]
+
+Extras de posible uso
+http://mundobyte-x.blogspot.com/2010/03/db4o-el-poder-de-las-bases-de-datos.html
+http://www.ibm.com/developerworks/library/j-db4o2/
+http://rchavarria.github.io/blog/2010/06/24/usar-apache-derby-como-base-de-datos/
+http://carlosvin.github.io/posts/java-embedded-db-performance-comparison/
+
+Quize simular el patron de diseño DAO
+https://pkp.sfu.ca/wiki/index.php?title=Data_Access_Objects_(DAO)#One-to-many_or_many-to-many_relations_of_independent_objects
+https://en.wikipedia.org/wiki/Java_Database_Connectivity
